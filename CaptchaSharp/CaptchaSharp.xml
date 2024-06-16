@@ -945,6 +945,49 @@
         <member name="P:CaptchaSharp.Services.AntiCaptchaService.Capabilities">
             <inheritdoc/>
         </member>
+        <member name="T:CaptchaSharp.Services.CapMonsterCloudService">
+            <summary>The service provided by <c>https://capmonster.cloud/</c></summary>
+        </member>
+        <member name="P:CaptchaSharp.Services.CapMonsterCloudService.ApiKey">
+            <summary>Your secret api key.</summary>
+        </member>
+        <member name="F:CaptchaSharp.Services.CapMonsterCloudService.httpClient">
+            <summary>The default <see cref="T:System.Net.Http.HttpClient"/> used for requests.</summary>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.#ctor(System.String,System.Net.Http.HttpClient)">
+            <summary>Initializes a <see cref="T:CaptchaSharp.Services.CapSolverService"/> using the given <paramref name="apiKey"/> and 
+            <paramref name="httpClient"/>. If <paramref name="httpClient"/> is null, a default one will be created.</summary>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.GetBalanceAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveImageCaptchaAsync(System.String,CaptchaSharp.Models.ImageCaptchaOptions,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveRecaptchaV2Async(System.String,System.String,System.String,System.Boolean,System.Boolean,CaptchaSharp.Models.Proxy,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveRecaptchaV3Async(System.String,System.String,System.String,System.Single,System.Boolean,CaptchaSharp.Models.Proxy,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveFuncaptchaAsync(System.String,System.String,System.String,System.Boolean,CaptchaSharp.Models.Proxy,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveHCaptchaAsync(System.String,System.String,CaptchaSharp.Models.Proxy,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveGeeTestAsync(System.String,System.String,System.String,System.String,CaptchaSharp.Models.Proxy,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.SolveDataDomeAsync(System.String,System.String,CaptchaSharp.Models.Proxy,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CaptchaSharp.Services.CapMonsterCloudService.CheckResult(CaptchaSharp.Models.CaptchaTask,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="P:CaptchaSharp.Services.CapMonsterCloudService.Capabilities">
+            <inheritdoc/>
+        </member>
         <member name="T:CaptchaSharp.Services.CapMonsterService">
             <summary>The service provided by the CapMonster OCR application by ZennoLab.</summary>
         </member>
