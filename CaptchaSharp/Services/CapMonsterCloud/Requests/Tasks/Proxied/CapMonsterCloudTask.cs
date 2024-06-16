@@ -23,8 +23,6 @@ namespace CaptchaSharp.Services.CapMonsterCloud.Requests.Tasks.Proxied
             ProxyType = proxy.Type.ToString().ToLower();
             ProxyLogin = proxy.Username;
             ProxyPassword = proxy.Password;
-            UserAgent = proxy.UserAgent;
-            SetCookies(proxy.Cookies);
 
             return this;
         }

@@ -72,7 +72,8 @@ namespace CaptchaSharp.Tests
                 dataS: "",
                 enterprise: false,
                 invisible: false,
-                proxy);
+                proxy: proxy,
+                cookies: new[] { ("hello", "world") });
 
             Assert.NotEqual(string.Empty, solution.Response);
         }
@@ -89,7 +90,8 @@ namespace CaptchaSharp.Tests
                 action: "action",
                 minScore: 0.3f,
                 enterprise: false,
-                proxy);
+                proxy: proxy,
+                cookies: new[]{("hello", "world")});
 
             Assert.NotEqual(string.Empty, solution.Response);
         }

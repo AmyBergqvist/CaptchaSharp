@@ -2,6 +2,7 @@
 using CaptchaSharp.Exceptions;
 using CaptchaSharp.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -92,6 +93,8 @@ namespace CaptchaSharp
         /// going to send it from when you submit the form. It can help bypass some blocks. If null, the service will 
         /// fetch the captcha without using a proxy.
         /// </param>
+        /// <param name="cookies">Additional cookies which must use during interaction with target page or Google.</param>
+        /// <param name="userAgent">The User-Agent header to be used in requests.</param>
         /// 
         /// <param name="cancellationToken">A token that can be used to cancel the async task.</param>
         /// 
@@ -105,8 +108,8 @@ namespace CaptchaSharp
         /// <exception cref="TaskSolutionException"></exception>
         /// <exception cref="TimeoutException"></exception>
         public Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, bool invisible = false, Proxy proxy = null, CancellationToken cancellationToken = default)
-            => SolveRecaptchaV2Async(siteKey, siteUrl, "", false, invisible, proxy, cancellationToken);
+            (string siteKey, string siteUrl, bool invisible = false, Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
+            => SolveRecaptchaV2Async(siteKey, siteUrl, "", false, invisible, proxy, cookies, userAgent, cancellationToken);
 
         /// <summary>Solves a Google ReCaptcha V2.</summary>
         /// 
@@ -121,6 +124,8 @@ namespace CaptchaSharp
         /// going to send it from when you submit the form. It can help bypass some blocks. If null, the service will 
         /// fetch the captcha without using a proxy.
         /// </param>
+        /// <param name="cookies">Additional cookies which must use during interaction with target page or Google.</param>
+        /// <param name="userAgent">The User-Agent header to be used in requests.</param>
         /// 
         /// <param name="cancellationToken">A token that can be used to cancel the async task.</param>
         /// 
@@ -135,7 +140,7 @@ namespace CaptchaSharp
         /// <exception cref="TimeoutException"></exception>
         public virtual Task<StringResponse> SolveRecaptchaV2Async
             (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             throw new NotSupportedException();
         }
@@ -152,6 +157,8 @@ namespace CaptchaSharp
         /// going to send it from when you submit the form. It can help bypass some blocks. If null, the service will 
         /// fetch the captcha without using a proxy.
         /// </param>
+        /// <param name="cookies">Additional cookies which must use during interaction with target page or Google.</param>
+        /// <param name="userAgent">The User-Agent header to be used in requests.</param>
         /// 
         /// <param name="cancellationToken">A token that can be used to cancel the async task.</param>
         /// 
@@ -165,8 +172,8 @@ namespace CaptchaSharp
         /// <exception cref="TaskSolutionException"></exception>
         /// <exception cref="TimeoutException"></exception>
         public Task<StringResponse> SolveRecaptchaV3Async
-            (string siteKey, string siteUrl, string action, float minScore, Proxy proxy = null, CancellationToken cancellationToken = default)
-            => SolveRecaptchaV3Async(siteKey, siteUrl, action, minScore, false, proxy, cancellationToken);
+            (string siteKey, string siteUrl, string action, float minScore, Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
+            => SolveRecaptchaV3Async(siteKey, siteUrl, action, minScore, false, proxy, cookies, userAgent, cancellationToken);
 
         /// <summary>Solves a Google ReCaptcha V3.</summary>
         /// 
@@ -180,6 +187,8 @@ namespace CaptchaSharp
         /// going to send it from when you submit the form. It can help bypass some blocks. If null, the service will 
         /// fetch the captcha without using a proxy.
         /// </param>
+        /// <param name="cookies">Additional cookies which must use during interaction with target page or Google.</param>
+        /// <param name="userAgent">The User-Agent header to be used in requests.</param>
         /// 
         /// <param name="cancellationToken">A token that can be used to cancel the async task.</param>
         /// 
@@ -194,7 +203,7 @@ namespace CaptchaSharp
         /// <exception cref="TimeoutException"></exception>
         public virtual Task<StringResponse> SolveRecaptchaV3Async
             (string siteKey, string siteUrl, string action, float minScore, bool enterprise = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             throw new NotSupportedException();
         }

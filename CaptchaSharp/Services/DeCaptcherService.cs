@@ -3,6 +3,7 @@ using CaptchaSharp.Exceptions;
 using CaptchaSharp.Models;
 using CaptchaSharp.Services.DeCaptcher;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading;
@@ -99,7 +100,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
             (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             if (proxy != null)
             {

@@ -82,7 +82,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
             (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var content = CreateTaskRequest();
 
@@ -134,6 +134,13 @@ namespace CaptchaSharp.Services
                     };
                 }
             }
+
+            if (userAgent != null)
+            {
+                content.Task.UserAgent = userAgent;
+            }
+
+            content.Task.SetCookies(cookies);
             
             var response = await httpClient.PostJsonToStringAsync
                 ("createTask",
@@ -148,7 +155,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV3Async
             (string siteKey, string siteUrl, string action = "verify", float minScore = 0.4F, bool enterprise = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             if (proxy != null)
                 throw new NotSupportedException("Proxies are not supported");
@@ -166,6 +173,13 @@ namespace CaptchaSharp.Services
                 MinScore = minScore,
                 IsEnterprise = enterprise
             };
+
+            if (userAgent != null)
+            {
+                content.Task.UserAgent = userAgent;
+            }
+
+            content.Task.SetCookies(cookies);
 
             var response = await httpClient.PostJsonToStringAsync
                 ("createTask",

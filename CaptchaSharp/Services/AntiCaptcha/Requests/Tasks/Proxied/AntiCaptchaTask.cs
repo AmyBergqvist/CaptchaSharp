@@ -12,8 +12,6 @@ namespace CaptchaSharp.Services.AntiCaptcha.Requests.Tasks.Proxied
         public int ProxyPort { get; set; }
         public string ProxyLogin { get; set; }
         public string ProxyPassword { get; set; }
-        public string UserAgent { get; set; }
-        public string Cookies { get; set; } // Format cookiename1=cookievalue1; cookiename2=cookievalue2
 
         public AntiCaptchaTask SetProxy(Proxy proxy)
         {
@@ -25,18 +23,8 @@ namespace CaptchaSharp.Services.AntiCaptcha.Requests.Tasks.Proxied
             ProxyType = proxy.Type.ToString().ToLower();
             ProxyLogin = proxy.Username;
             ProxyPassword = proxy.Password;
-            UserAgent = proxy.UserAgent;
-            SetCookies(proxy.Cookies);
 
             return this;
-        }
-
-        private void SetCookies(IEnumerable<(string, string)> cookies)
-        {
-            if (cookies == null)
-                return;
-
-            Cookies = string.Join("; ", cookies.Select(c => $"{c.Item1}={c.Item2}"));
         }
     }
 }

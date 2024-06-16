@@ -21,12 +21,6 @@ namespace CaptchaSharp.Models
         /// <summary></summary>
         public string Password { get; set; }
 
-        /// <summary>The User-Agent header to be used in requests.</summary>
-        public string UserAgent { get; set; }
-
-        /// <summary>The cookies needed to get to the page where the captcha is shown.</summary>
-        public (string, string)[] Cookies { get; set; }
-
         /// <summary>Whether the proxy requires authentication.</summary>
         public bool RequiresAuthentication => !string.IsNullOrEmpty(Username);
 
@@ -43,7 +37,5 @@ namespace CaptchaSharp.Models
             Password = password;
         }
 
-        internal string GetCookieString()
-            => Cookies != null ? string.Join("; ", Cookies.Select(c => $"{c.Item1}={c.Item2}")) : string.Empty;
     }
 }

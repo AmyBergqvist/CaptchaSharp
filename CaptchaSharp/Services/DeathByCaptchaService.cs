@@ -4,9 +4,11 @@ using CaptchaSharp.Models;
 using CaptchaSharp.Services.DeathByCaptcha.Tasks;
 using CaptchaSharp.Services.DeathByCaptcha.Tasks.Proxied;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -81,7 +83,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
             (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             DBCTaskProxyless task;
 
@@ -117,7 +119,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV3Async
             (string siteKey, string siteUrl, string action = "verify", float minScore = 0.4F, bool enterprise = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             DBCTaskProxyless task;
 

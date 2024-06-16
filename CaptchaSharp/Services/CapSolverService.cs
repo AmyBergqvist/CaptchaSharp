@@ -8,6 +8,7 @@ using CaptchaSharp.Services.CapSolver.Responses;
 using CaptchaSharp.Services.CapSolver.Responses.Solutions;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -91,7 +92,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
             (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var content = CreateTaskRequest();
 
@@ -140,6 +141,13 @@ namespace CaptchaSharp.Services
                 }
             }
 
+            if (userAgent != default)
+            {
+                content.Task.UserAgent = userAgent;
+            }
+
+            content.Task.SetCookies(cookies);
+
             var response = await httpClient.PostJsonToStringAsync
                 ("createTask",
                 content,
@@ -153,7 +161,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV3Async
             (string siteKey, string siteUrl, string action = "verify", float minScore = 0.4F, bool enterprise = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var content = CreateTaskRequest();
 
@@ -179,6 +187,13 @@ namespace CaptchaSharp.Services
                     IsEnterprise = enterprise
                 }.SetProxy(proxy);
             }
+
+            if (userAgent != default)
+            {
+                content.Task.UserAgent = userAgent;
+            }
+
+            content.Task.SetCookies(cookies);
 
             var response = await httpClient.PostJsonToStringAsync
                 ("createTask",

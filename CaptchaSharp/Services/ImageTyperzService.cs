@@ -4,6 +4,8 @@ using CaptchaSharp.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,7 +79,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
             (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var response = await httpClient.PostToStringAsync
                 (enterprise ? "captchaapi/UploadRecaptchaEnt.ashx" : "captchaapi/UploadRecaptchaToken.ashx",
@@ -88,6 +90,8 @@ namespace CaptchaSharp.Services
                 .Add("recaptchatype", invisible ? 2 : 1, !enterprise)
                 .Add("enterprise_type", "v2", enterprise)
                 .Add("data-s", dataS, !string.IsNullOrEmpty(dataS))
+                .Add("cookie_input", string.Join(";", cookies.Select(c => $"{c.Item1}={c.Item2}")), cookies != default && cookies.Any())
+                .Add("useragent", userAgent, userAgent != default)
                 .Add(GetProxyParams(proxy)),
                 cancellationToken)
                 .ConfigureAwait(false);
@@ -98,7 +102,7 @@ namespace CaptchaSharp.Services
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV3Async
             (string siteKey, string siteUrl, string action = "verify", float minScore = 0.4F, bool enterprise = false,
-            Proxy proxy = null, CancellationToken cancellationToken = default)
+            Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var response = await httpClient.PostToStringAsync
                 (enterprise ? "captchaapi/UploadRecaptchaEnt.ashx" : "captchaapi/UploadRecaptchaToken.ashx",
@@ -110,8 +114,10 @@ namespace CaptchaSharp.Services
                 .Add("score", minScore.ToString("0.0", CultureInfo.InvariantCulture))
                 .Add("recaptchatype", 3, !enterprise)
                 .Add("enterprise_type", "v3", enterprise)
+                .Add("cookie_input", string.Join(";", cookies.Select(c => $"{c.Item1}={c.Item2}")), cookies != default && cookies.Any())
+                .Add("useragent", userAgent, userAgent != default)
                 .Add(GetProxyParams(proxy)),
-                cancellationToken)
+            cancellationToken)
                 .ConfigureAwait(false);
 
             return await TryGetResult(response, CaptchaType.ReCaptchaV2, cancellationToken) as StringResponse;
@@ -277,7 +283,6 @@ namespace CaptchaSharp.Services
 
             var proxyPairs = new List<(string, string)>
             {
-                ("useragent", proxy.UserAgent),
                 ("proxytype", "HTTP")
             };
 
