@@ -36,7 +36,7 @@ namespace CaptchaSharp.Services.More
 
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
+            (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var response = await httpClient.GetStringAsync
