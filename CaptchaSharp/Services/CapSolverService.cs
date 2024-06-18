@@ -414,6 +414,26 @@ namespace CaptchaSharp.Services
         }
         #endregion
 
+        #region Reporting the solution
+        /// <inheritdoc/>
+        public async override Task ReportSolution
+            (long taskId, CaptchaType type, bool correct = false, CancellationToken cancellationToken = default)
+        {
+            string response;
+            ReportIncorrectCaptchaResponse incResponse;
+
+            response = await httpClient.PostJsonToStringAsync
+            ("feedbackTask",
+                new ReportIncorrectCaptchaRequest() { ClientKey = ApiKey, AppId = appId, TaskId = $"{taskId}", CaptchaResult = new ReportIncorrectCaptchaResultRequest(){Invalid = !correct}},
+                cancellationToken).ConfigureAwait(false);
+
+            incResponse = response.Deserialize<ReportIncorrectCaptchaResponse>();
+
+            if (incResponse.NotFoundOrExpired)
+                throw new TaskReportException("Captcha not found or expired");
+        }
+        #endregion
+
         #region Private Methods
         private CaptchaTaskRequest CreateTaskRequest()
         {
