@@ -91,7 +91,7 @@ namespace CaptchaSharp.Services
 
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
+            (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var content = CreateTaskRequest();
@@ -104,7 +104,8 @@ namespace CaptchaSharp.Services
                     {
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
-                        EnterprisePayload = dataS
+                        EnterprisePayload = dataS,
+                        PageAction = action
                     }.SetProxy(proxy);
                 }
                 else
@@ -113,7 +114,8 @@ namespace CaptchaSharp.Services
                     {
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
-                        EnterprisePayload = dataS
+                        EnterprisePayload = dataS,
+                        PageAction = action
                     };
                 }
             }
@@ -126,7 +128,8 @@ namespace CaptchaSharp.Services
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
                         IsInvisible = invisible,
-                        RecaptchaDataSValue = dataS
+                        RecaptchaDataSValue = dataS,
+                        PageAction = action
                     }.SetProxy(proxy);
                 }
                 else
@@ -136,7 +139,8 @@ namespace CaptchaSharp.Services
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
                         IsInvisible = invisible,
-                        RecaptchaDataSValue = dataS
+                        RecaptchaDataSValue = dataS,
+                        PageAction = action
                     };
                 }
             }

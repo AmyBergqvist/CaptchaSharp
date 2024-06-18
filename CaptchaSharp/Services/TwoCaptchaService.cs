@@ -123,7 +123,7 @@ namespace CaptchaSharp.Services
 
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
+            (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var response = await httpClient.PostMultipartToStringAsync
@@ -141,6 +141,7 @@ namespace CaptchaSharp.Services
                     .Add("header_acao", "1", AddACAOHeader)
                     .Add("cookies", string.Join(";", cookies.Select(c => $"{c.Item1}={c.Item2}")), cookies != default && cookies.Any())
                     .Add("userAgent", userAgent, userAgent != default)
+                    .Add("action", action, action != default)
                     .Add(ConvertProxy(proxy))
                     .ToMultipartFormDataContent(),
                 cancellationToken)

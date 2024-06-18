@@ -87,7 +87,7 @@ namespace CaptchaSharp.Services
 
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
+            (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var content = CreateTaskRequest();
@@ -100,7 +100,8 @@ namespace CaptchaSharp.Services
                     {
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
-                        EnterprisePayload = dataS
+                        EnterprisePayload = dataS,
+                        PageAction = action
                     }.SetProxy(proxy);
                 }
                 else
@@ -109,7 +110,8 @@ namespace CaptchaSharp.Services
                     {
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
-                        EnterprisePayload = dataS
+                        EnterprisePayload = dataS,
+                        PageAction = action
                     };
                 }
             }
@@ -122,7 +124,8 @@ namespace CaptchaSharp.Services
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
                         IsInvisible = invisible,
-                        RecaptchaDataSValue = dataS
+                        RecaptchaDataSValue = dataS,
+                        PageAction = action
                     }.SetProxy(proxy);
                 }
                 else
@@ -132,7 +135,8 @@ namespace CaptchaSharp.Services
                         WebsiteKey = siteKey,
                         WebsiteURL = siteUrl,
                         IsInvisible = invisible,
-                        RecaptchaDataSValue = dataS
+                        RecaptchaDataSValue = dataS,
+                        PageAction = action
                     };
                 }
             }
@@ -399,6 +403,49 @@ namespace CaptchaSharp.Services
             {
                 ClientKey = ApiKey,
             };
+        }
+        #endregion
+
+        #region Reporting the solution
+        /// <inheritdoc/>
+        public async override Task ReportSolution
+            (long taskId, CaptchaType type, bool correct = false, CancellationToken cancellationToken = default)
+        {
+            if (correct)
+                throw new NotSupportedException("This service doesn't allow reporting of good solutions");
+
+            string response;
+            ReportIncorrectCaptchaResponse incResponse;
+
+            switch (type)
+            {
+                case CaptchaType.ImageCaptcha:
+                    response = await httpClient.PostJsonToStringAsync
+                    ("reportIncorrectImageCaptcha",
+                        new ReportIncorrectCaptchaRequest() { ClientKey = ApiKey, TaskId = (int)taskId },
+                        cancellationToken).ConfigureAwait(false);
+
+                    incResponse = response.Deserialize<ReportIncorrectCaptchaResponse>();
+                    break;
+
+                case CaptchaType.ReCaptchaV2:
+                case CaptchaType.ReCaptchaV3:
+                case CaptchaType.HCaptcha: 
+                case CaptchaType.GeeTest:
+                    response = await httpClient.PostJsonToStringAsync
+                    ("reportIncorrectTokenCaptcha",
+                        new ReportIncorrectCaptchaRequest() { ClientKey = ApiKey, TaskId = (int)taskId },
+                        cancellationToken).ConfigureAwait(false);
+
+                    incResponse = response.Deserialize<ReportIncorrectCaptchaResponse>();
+                    break;
+
+                default:
+                    throw new NotSupportedException("Reporting is not supported for this captcha type");
+            }
+
+            if (incResponse.NotFoundOrExpired)
+                throw new TaskReportException("Captcha not found or expired");
         }
         #endregion
 

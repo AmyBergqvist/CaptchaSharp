@@ -108,8 +108,8 @@ namespace CaptchaSharp
         /// <exception cref="TaskSolutionException"></exception>
         /// <exception cref="TimeoutException"></exception>
         public Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, bool invisible = false, Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
-            => SolveRecaptchaV2Async(siteKey, siteUrl, "", false, invisible, proxy, cookies, userAgent, cancellationToken);
+            (string siteKey, string siteUrl, string action = default, bool invisible = false, Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
+            => SolveRecaptchaV2Async(siteKey, siteUrl, action, "", false, invisible, proxy, cookies, userAgent, cancellationToken);
 
         /// <summary>Solves a Google ReCaptcha V2.</summary>
         /// 
@@ -139,7 +139,7 @@ namespace CaptchaSharp
         /// <exception cref="TaskSolutionException"></exception>
         /// <exception cref="TimeoutException"></exception>
         public virtual Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
+            (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             throw new NotSupportedException();

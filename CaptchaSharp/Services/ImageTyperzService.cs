@@ -78,7 +78,7 @@ namespace CaptchaSharp.Services
 
         /// <inheritdoc/>
         public async override Task<StringResponse> SolveRecaptchaV2Async
-            (string siteKey, string siteUrl, string dataS = "", bool enterprise = false, bool invisible = false,
+            (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
             var response = await httpClient.PostToStringAsync
@@ -92,6 +92,7 @@ namespace CaptchaSharp.Services
                 .Add("data-s", dataS, !string.IsNullOrEmpty(dataS))
                 .Add("cookie_input", string.Join(";", cookies.Select(c => $"{c.Item1}={c.Item2}")), cookies != default && cookies.Any())
                 .Add("useragent", userAgent, userAgent != default)
+                .Add("captchaaction", action, action != default)
                 .Add(GetProxyParams(proxy)),
                 cancellationToken)
                 .ConfigureAwait(false);

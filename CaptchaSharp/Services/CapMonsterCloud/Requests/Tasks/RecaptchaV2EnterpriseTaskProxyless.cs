@@ -4,6 +4,7 @@
     {
         public string WebsiteURL { get; set; }
         public string WebsiteKey { get; set; }
+        public string PageAction { get; set; }
         public string EnterprisePayload { get; set; }
 
         public RecaptchaV2EnterpriseTaskProxyless()
