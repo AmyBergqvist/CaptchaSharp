@@ -126,7 +126,7 @@ namespace CaptchaSharp.Services
             (string siteKey, string siteUrl, string action = default, string dataS = "", bool enterprise = false, bool invisible = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
-            var response = await httpClient.PostMultipartToStringAsync
+            var response = await httpClient.PostToStringAsync
                 ("in.php",
                 new StringPairCollection()
                     .Add("key", ApiKey)
@@ -144,8 +144,7 @@ namespace CaptchaSharp.Services
                     .Add("cookies", string.Join(";", cookies.Select(c => $"{c.Item1}={c.Item2}")), cookies != default && cookies.Any())
                     .Add("userAgent", userAgent, userAgent != default)
                     .Add("action", action, action != default)
-                    .Add(ConvertProxy(proxy))
-                    .ToMultipartFormDataContent(),
+                    .Add(ConvertProxy(proxy)),
                 cancellationToken)
                 .ConfigureAwait(false);
 
@@ -160,7 +159,7 @@ namespace CaptchaSharp.Services
             (string siteKey, string siteUrl, string action = "verify", float minScore = 0.4F, bool enterprise = false,
             Proxy proxy = null, IEnumerable<(string, string)> cookies = default, string userAgent = default, CancellationToken cancellationToken = default)
         {
-            var response = await httpClient.PostMultipartToStringAsync
+            var response = await httpClient.PostToStringAsync
                 ("in.php",
                 new StringPairCollection()
                     .Add("key", ApiKey)
@@ -177,8 +176,7 @@ namespace CaptchaSharp.Services
                     .Add("header_acao", "1", AddACAOHeader)
                     .Add("cookies", string.Join("; ", cookies.Select(c => $"{c.Item1}={c.Item2}")), cookies != default && cookies.Any())
                     .Add("userAgent", userAgent, userAgent != default)
-                    .Add(ConvertProxy(proxy))
-                    .ToMultipartFormDataContent(),
+                    .Add(ConvertProxy(proxy)),
                 cancellationToken)
                 .ConfigureAwait(false);
 
